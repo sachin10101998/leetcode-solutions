@@ -1,28 +1,42 @@
-class SnapshotArray {
+class SnapshotArray {    
 public:
-    vector<vector<pair<int, int>>> data;
-    int snapIdx;
+    vector<vector<pair<int, int>>> snapShot;
+    int snapId;
     SnapshotArray(int length) {
-        data.resize(length);
-        snapIdx = 0;
+        vector<vector<pair<int, int>>> x(length, vector<pair<int, int>>());
+        this->snapShot = x;
+        this->snapId = -1;
     }
     
     void set(int index, int val) {
-        if (data[index].empty() || data[index].back().first < snapIdx)
-            data[index].emplace_back(snapIdx, val);
-        else
-            data[index].back().second = val;
+        if (!snapShot[index].empty() && snapShot[index].back().first == snapId + 1) {
+            snapShot[index].back().second = val;
+            return;
+        }
+        
+        snapShot[index].push_back(make_pair(snapId + 1, val));
     }
     
     int snap() {
-        return snapIdx++;
+        snapId = snapId + 1;
+        return snapId;
     }
     
     int get(int index, int snap_id) {
-        auto it = upper_bound(data[index].begin(), data[index].end(), make_pair(snap_id, INT_MAX));
-        if (it == data[index].begin())  // no data at snap_id
+        if (snap_id > this->snapId) {
+            return -1;
+        }
+        
+        if (snapShot[index].empty()) {
             return 0;
-        else    // return the data with snapIdx <= snap_id, which is the prev of upper_bound
-            return prev(it)->second;
+        }        
+       
+        if (snap_id > snapShot[index].back().first) {
+            return snapShot[index].back().second;
+        }
+        
+        int idx = lower_bound(snapShot[index].begin(), snapShot[index].end(), make_pair(snap_id, -1)) - snapShot[index].begin();
+        idx += snapShot[index][idx].first == snap_id ? 0 : -1;
+        return idx < 0 ? 0 : snapShot[index][idx].second;
     }
 };
