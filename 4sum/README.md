@@ -12,7 +12,7 @@
 <strong>Output:</strong> [[2,2,2,2]]
 <p>&nbsp;</p>
 <p><strong>Constraints:</strong></p>
-
+<br>
 <ul>
 	<li><code>0 &lt;= nums.length &lt;= 200</code></li>
 	<li><code>-10<sup>9</sup> &lt;= nums[i] &lt;= 10<sup>9</sup></code></li>
