@@ -5,6 +5,7 @@ public:
        
         vector<int> ans(nums1.size()+nums2.size());
         
+        // first merge both the arrays
         merge(nums1.begin(),nums1.end(),nums2.begin(),nums2.end(),ans.begin());
         
         int a=ans.size();
