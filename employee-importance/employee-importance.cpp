@@ -10,18 +10,21 @@ public:
 
 class Solution {
 public:
-    int answer=0;
- 
-    int getImportance(vector<Employee*> employees, int id) {
-        for(int i=0;i<employees.size();i++){
-            if(employees[i]->id==id){
-                answer+=employees[i]->importance;
-                vector<int> temp = employees[i]->subordinates;
-                for(int j=0;j<temp.size();j++){
-                    getImportance(employees, temp[j]);
-                }
-            }
+    void dfs(int id, int& ans, map<int,Employee*>&m1){
+        Employee* parent = m1[id];
+        ans+=parent->importance;
+        for(auto x: parent->subordinates){
+            dfs(x,ans,m1);
         }
-        return answer;
+    }
+    int getImportance(vector<Employee*> employees, int id) {
+        map<int, Employee*> m1;
+        for(auto x: employees){
+            m1[x->id]=x;
+        }
+        int ans =0;
+        dfs(id, ans, m1);
+        return ans;
+        
     }
 };
