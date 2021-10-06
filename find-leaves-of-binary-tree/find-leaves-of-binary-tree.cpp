@@ -14,9 +14,7 @@ class Solution {
 public:
     map<int,vector<TreeNode*>>m1;
     int height(TreeNode* root){
-        if(root==NULL){
-            return 0;
-        }
+        if(!root){return 0;}
         int lheight = height(root->left);
         int rheight = height(root->right);
         int temp = max(lheight,rheight)+1;
@@ -35,18 +33,12 @@ public:
     vector<vector<int>> findLeaves(TreeNode* root) {
         int height_of_tree = height(root);
         vector<vector<int>> answer(height_of_tree+1,vector<int>(0));
-       
         for(auto x: m1){
-            cout<<x.first<<" ";
             vector<int>temp3;
             for(auto j: x.second){
-                cout<<j->val<<" ";
                 temp3.push_back(j->val);
-                
             }
-            cout<<endl;
             answer[x.first] = temp3;
-            temp3.clear();
         }
         answer.erase(answer.begin());
         return answer;
