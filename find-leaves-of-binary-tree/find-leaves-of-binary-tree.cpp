@@ -9,38 +9,37 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-#include <bits/stdc++.h>
 class Solution {
 public:
-    map<int,vector<TreeNode*>>m1;
+    map<int, vector<TreeNode*>> m1;
     int height(TreeNode* root){
-        if(!root){return 0;}
+        if(root==NULL){
+            
+            return 0;
+        }
         int lheight = height(root->left);
         int rheight = height(root->right);
-        int temp = max(lheight,rheight)+1;
-        if(m1.find(temp)==m1.end()){
-            vector<TreeNode*> temp2;
-            temp2.push_back(root);
-            m1[temp]=temp2;
+        int currHeight = 1+max(lheight,rheight);
+        if(m1.find(currHeight)==m1.end()){
+            vector<TreeNode*> temp;
+            temp.push_back(root);
+            m1[currHeight]=temp;
         } else{
-            vector<TreeNode*> temp2 = m1[temp];
-            temp2.push_back(root);
-            m1[temp]=temp2;
+            m1[currHeight].push_back(root);
         }
-        return temp;
-        
+        return currHeight;
     }
     vector<vector<int>> findLeaves(TreeNode* root) {
-        int height_of_tree = height(root);
-        vector<vector<int>> answer(height_of_tree+1,vector<int>(0));
+        
+        vector<vector<int>>result;
+        int t = height(root);
         for(auto x: m1){
-            vector<int>temp3;
-            for(auto j: x.second){
-                temp3.push_back(j->val);
+            vector<int> temp;
+            for(auto y: x.second){
+                temp.push_back(y->val);
             }
-            answer[x.first] = temp3;
+            result.push_back(temp);
         }
-        answer.erase(answer.begin());
-        return answer;
+        return result;
     }
 };
