@@ -1,9 +1,7 @@
 # leetcode-solutions
 Leetcode solutions
 
-blah blah'
-
-hjhsk
+This repo contains leetcode solutions
 
 
 
