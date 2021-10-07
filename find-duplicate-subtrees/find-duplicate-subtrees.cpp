@@ -1,16 +1,18 @@
 class Solution {
 public:
     vector<TreeNode*> findDuplicateSubtrees(TreeNode* root) {
-        unordered_map<string, int>m;
-        vector<TreeNode*>res;
-        DFS(root, m, res);
-        return res;
+        unordered_map<string, vector<TreeNode*>> map;
+        vector<TreeNode*> dups;
+        serialize(root, map);
+        for (auto it = map.begin(); it != map.end(); it++)
+            if (it->second.size() > 1) dups.push_back(it->second[0]);
+        return dups;
     }
-    
-    string DFS(TreeNode* root, unordered_map<string, int>& m, vector<TreeNode*>& res){
-        if(!root) return "";
-        string s = to_string(root->val) + "," + DFS(root->left, m, res) + "," + DFS(root->right, m, res);
-        if(m[s]++ == 1) res.push_back(root);
+private:
+    string serialize(TreeNode* node, unordered_map<string, vector<TreeNode*>>& map) {
+        if (!node) return "";
+        string s = "(" + serialize(node->left, map) + to_string(node->val) + serialize(node->right, map) + ")";
+        map[s].push_back(node);
         return s;
     }
 };
