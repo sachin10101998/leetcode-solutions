@@ -1,31 +1,16 @@
 class Solution {
 public:
-    bool check(int start,string&source,string&S){
-    if(start+source.size()>S.size()){return false;}
-    for(int i=0;i<source.size();i++){
-        if(S[start+i]!=source[i]){return false;}
-    }
-    return true;
-}
-string findReplaceString(string S, vector<int>& indexes, vector<string>& sources, vector<string>& targets){
-    map<int,int>helper;
-    int n = indexes.size();
-    for(int i=0;i<n;i++){
-        if(check(indexes[i],sources[i],S)==false){continue;}
-        helper[indexes[i]] = i;
-    }
-    string result;
-    auto it = helper.begin();
-    for(int i=0;i<S.size();i++){
-        if(it!=helper.end()&&i==it->first){//need to be deleted
-            result += targets[it->second];
-            i += (sources[it->second].size() - 1);//we go to the index which is part of our resulting string
-            it++;//getting next source[i] to be deleted
+    string findReplaceString(string S, vector<int>& indexes, vector<string>& sources, vector<string>& targets) {
+        vector<pair<int, int>> sorted;
+        for (int i = 0 ; i < indexes.size(); i++)
+            sorted.push_back({indexes[i], i});
+        sort(sorted.rbegin(), sorted.rend());
+        for (auto ind : sorted) {
+            int i = ind.first;
+            string s = sources[ind.second], t = targets[ind.second];
+            if (S.substr(i, s.length()) == s)
+                S = S.substr(0, i) + t + S.substr(i + s.length());
         }
-        else{
-            result.push_back(S[i]);//we don't delete it is part of resulting string
-        }
+        return S;
     }
-    return result;
-}
 };
