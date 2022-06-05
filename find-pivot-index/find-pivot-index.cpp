@@ -1,13 +1,8 @@
 class Solution {
 public:
     int pivotIndex(vector<int>& nums) {
-        int sum=0;
         if(nums.size()==1) {
             return 0;
-        }
-        
-        for(auto x: nums) {
-            sum+=x;
         }
         vector<int> leftSum;
         vector<int> rightSum;
