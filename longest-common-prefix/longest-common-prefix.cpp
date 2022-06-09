@@ -1,34 +1,39 @@
-#include<bits/stdc++.h>
 class Solution {
+    struct TrieNode {
+        bool last = false;
+        unordered_map<char, TrieNode *> letters;
+    };
+    class Trie {
+        TrieNode head;
+    public:
+        void addWord(const string &s) {
+            TrieNode *p = &head;
+            for(char c : s) {
+                if(p->letters.count(c) == 0) {
+                    p->letters[c] = new TrieNode{};
+                }
+                p = p->letters[c];
+            }
+            p->last = true;
+        }
+        string lcp() {
+            string ret;
+            auto *p = &head;
+            
+            while(p->letters.size() == 1 && !p->last) {
+                auto it = p->letters.begin();
+                p = p->letters[it->first];
+                ret += it->first;
+            }
+            return ret;
+        }
+    };
 public:
     string longestCommonPrefix(vector<string>& strs) {
-        int smallest = INT_MAX;
-        for(int i=0;i<strs.size();i++){
-            smallest = min(smallest, strs[i].size());
+        Trie trie;
+        for(const auto &w : strs) {
+            trie.addWord(w);
         }
-        string res="";
-        if(smallest==0){
-            return res;
-        }
-        for(int i=0;i<smallest;i++){
-            char tem = strs[0][i];
-            for(int j=1;j<strs.size();j++){
-                if(strs[j][i]!=tem){
-                    return res;
-                } else {
-                    cout<<"Do Nothing!";
-                }
-            }
-            res+=tem;
-        }
-        return res;
-    }
-    
-    int min(int a , int b){
-        if(a<b){
-            return a;
-        } else{
-            return b;
-        }
+        return trie.lcp();
     }
 };
