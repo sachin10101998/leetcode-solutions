@@ -10,7 +10,8 @@ public:
         sum += nums[i];
         while (sum >= s) {
             ans = min(ans, i + 1 - left);
-            sum -= nums[left++];
+            sum -= nums[left];
+            left++;
         }
     }
     return (ans != INT_MAX) ? ans : 0;
