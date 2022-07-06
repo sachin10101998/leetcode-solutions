@@ -1,28 +1,44 @@
 class Solution {
 public:
-    int solve(vector<int> nums, int index){
-        int pivot = nums[index];
-        if(index==nums.size()-1){
-            return -1;
-        }
-        for(int i=index+1;i<nums.size();i++){
-            if(nums[i]>pivot){
-                return nums[i];
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        stack<int>s;
+        map<int,int> ng;
+        for(int i=0;i<nums2.size();i++){
+            if(s.empty()){
+                s.push(nums2[i]);
+            } else {
+                if(s.top()>nums2[i]){
+                    s.push(nums2[i]);
+                } else {
+                    while(!s.empty()&&s.top()<nums2[i]){
+                        int x = s.top();
+                        s.pop();
+                        ng[x]=nums2[i];
+                    }
+                    s.push(nums2[i]);
+                }
             }
         }
-        return -1;
-    }
-    
-    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
-        map<int,int>m1;
         for(int i=0;i<nums2.size();i++){
-            m1[nums2[i]]=i;
+            cout<<"Next greater element for "<<nums2[i]<<" is ";
+            if(ng.find(nums2[i])!=ng.end()){
+                cout<<ng[nums2[i]];
+            } else{
+                cout<<"-1"<<endl;
+            }
         }
+
         vector<int> result;
         for(int i=0;i<nums1.size();i++){
-            result.push_back(solve(nums2, m1[nums1[i]]));
+         if(ng.find(nums1[i])!=ng.end()){
+             result.push_back(ng[nums1[i]]);
+         } else {
+             result.push_back(-1);
+         }
+
+            
         }
-        return result;
         
+        return result;
     }
 };
